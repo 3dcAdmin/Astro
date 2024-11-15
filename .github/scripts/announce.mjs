@@ -1,4 +1,4 @@
-import { globby as glob } from 'globby';
+import { glob } from 'tinyglobby';
 import { fileURLToPath } from 'node:url';
 import { readFile } from 'node:fs/promises';
 import { setOutput } from './utils.mjs';
@@ -85,6 +85,8 @@ async function generatePackageMap() {
 	const packageRoot = new URL('../../packages/', import.meta.url);
 	const packages = await glob(['*/package.json', '*/*/package.json'], {
 		cwd: fileURLToPath(packageRoot),
+		expandDirectories: false,
+		ignore: ['**/node_modules/**'],
 	});
 	await Promise.all(
 		packages.map(async (pkg) => {
