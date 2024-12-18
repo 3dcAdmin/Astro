@@ -17,6 +17,7 @@ import type { AstroCookieSetOptions } from '../../core/cookies/cookies.js';
 import type { Logger, LoggerLevel } from '../../core/logger/core.js';
 import type { EnvSchema } from '../../env/schema.js';
 import type { AstroIntegration } from './integrations.js';
+import type { BuiltInProvider, FontFamily, FontProvider } from '../../assets/fonts/types.js';
 export type Locales = (string | { codes: string[]; path: string })[];
 
 type NormalizeLocales<T extends Locales> = {
@@ -164,6 +165,7 @@ export interface ViteUserConfig extends OriginalViteUserConfig {
  */ export interface AstroUserConfig<
 	TLocales extends Locales = never,
 	TSession extends SessionDriverName = never,
+	TFontProvidersName extends string = never,
 > {
 	/**
 	 * @docs
@@ -2059,6 +2061,49 @@ export interface ViteUserConfig extends OriginalViteUserConfig {
 					 */
 					mode: SvgRenderMode;
 			  };
+
+		/**
+		 *
+		 * @name experimental.fonts
+		 * @type {object}
+		 * @default `undefined`
+		 * @version 5.x
+		 * @description
+		 *
+		 * TODO:
+		 */
+		fonts?: {
+			/**
+			 *
+			 * @name experimental.fonts.providers
+			 * @type {FontProvider[]}
+			 * @version 5.x
+			 * @description
+			 *
+			 * TODO:
+			 * TODO: generics
+			 */
+			providers?: TFontProvidersName extends never
+				? FontProvider<string>[]
+				: FontProvider<TFontProvidersName>[];
+
+			/**
+			 *
+			 * @name experimental.fonts.families
+			 * @type {FontFamily[]}
+			 * @version 5.x
+			 * @description
+			 *
+			 * TODO:
+			 * TODO: generics
+			 */
+			// proper autocomplete
+			// families: TFontProvidersName extends never
+			// works when no providers specified
+			families: TFontProvidersName extends never
+				? FontFamily<BuiltInProvider | (string & {})>[]
+				: FontFamily<BuiltInProvider | NoInfer<TFontProvidersName>>[];
+		};
 	};
 }
 

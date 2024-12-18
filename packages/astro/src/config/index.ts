@@ -7,6 +7,7 @@ import type {
 	SessionDriverName,
 } from '../types/public/config.js';
 import { createDevelopmentManifest } from '../vite-plugin-astro-server/plugin.js';
+import * as _fontProviders from '../assets/fonts/providers.js';
 
 /**
  * See the full Astro Configuration API Documentation
@@ -15,9 +16,22 @@ import { createDevelopmentManifest } from '../vite-plugin-astro-server/plugin.js
 export function defineConfig<
 	const TLocales extends Locales = never,
 	const TDriver extends SessionDriverName = never,
->(config: AstroUserConfig<TLocales, TDriver>) {
+	TFontProvidersName extends string = never,
+>(config: AstroUserConfig<TLocales, TDriver, TFontProvidersName>) {
 	return config;
 }
+
+/** TODO: */
+export const fontProviders = _fontProviders;
+
+defineConfig({
+	experimental: {
+		fonts: {
+			providers: [fontProviders.adobe({ apiKey: '' }), fontProviders.test()],
+			families: [{ provider: 'local' }],
+		},
+	},
+});
 
 /**
  * Use Astro to generate a fully resolved Vite config
